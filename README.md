@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Setup
 
 clone the repo and then run `npm install`.
@@ -62,3 +63,6 @@ Run the following command to install packages like npm install packagename
 ```js
 ni packagename
 ```
+=======
+# gocorals-backend
+>>>>>>> bbc381182bebe3d6589b7428cc31719d543e2026
