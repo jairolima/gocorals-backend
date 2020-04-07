@@ -1,5 +1,7 @@
 'use strict'
 
+const Appointment = use('App/Models/Appointment')
+
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -17,30 +19,26 @@ class AppointmentController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ request, response, view }) {
+
+  // LISTA TODOS AGENDAMENTOS DO SLOT(EVENTO) PASSADO E QUE ESTAO ATIVOS PARA O ADMIN VER
+  async index ({ params }) {
+    const appointments = await Appointment.query().where('slot_id', params.slots_id).whereNull('canceled_at').with('user').with('slot').fetch()
+    // listar apenas agendamentos do slot passado no params
+    return appointments
   }
 
-  /**
-   * Render a form to be used for creating a new appointment.
-   * GET appointments/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
-  }
+  async store ({ request, params, auth }) {
+    const data = request.only(['voucher_quantity'])
 
-  /**
-   * Create/save a new appointment.
-   * POST appointments
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async store ({ request, response }) {
+    const appointment = await Appointment.create({ ...data, user_id: auth.user.id, slot_id: params.slots_id })
+
+    // pegar o slot.quantity
+    // pegar o total de voucher somando todos
+    // comparar se menor for verdadeiro true
+
+    // parei em dar rollback e testar create appointment
+
+    return appointment
   }
 
   /**
@@ -87,6 +85,11 @@ class AppointmentController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    const appointment = await Appointment.findOrFail(params.id)
+
+    appointment.canceled_at = new Date()
+
+    await appointment.save()
   }
 }
 

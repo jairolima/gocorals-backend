@@ -14,6 +14,10 @@ Route.group(() => {
   Route.post('/slots', 'SlotController.store')
   Route.put('/slots/:id', 'SlotController.update')
   Route.delete('/slots/:id', 'SlotController.destroy')
+
+  Route.get('/vouchers', 'VoucherController.index')
+
+  Route.resource('slots.appointment', 'AppointmentController').apiOnly()
 }).middleware(['auth'])
 
 // Route.resource('slots', 'SlotController').apiOnly()

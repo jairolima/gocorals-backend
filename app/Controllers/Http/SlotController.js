@@ -22,7 +22,7 @@ class SlotController {
    * @param {View} ctx.view
    */
   async store ({ request, response, auth }) {
-    const data = request.only(['date', 'title', 'description', 'price', 'quantity'])
+    const data = request.only(['date', 'title', 'description', 'price', 'quantity', 'file_id'])
 
     const slot = await Slot.create({ ...data, user_id: auth.user.id })
 
