@@ -36,8 +36,6 @@ class AppointmentController {
     // pegar o total de voucher somando todos
     // comparar se menor for verdadeiro true
 
-    // parei em dar rollback e testar create appointment
-
     return appointment
   }
 
